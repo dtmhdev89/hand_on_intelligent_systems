@@ -1,2 +1,2 @@
-# hand_on_intelligent_systems
+# An Intelligent Systems with multiple apps
 AI applications python app
