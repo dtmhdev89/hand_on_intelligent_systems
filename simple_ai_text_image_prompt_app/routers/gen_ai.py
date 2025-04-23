@@ -14,7 +14,7 @@ router = APIRouter(
 class GenerationRequest(BaseModel):
     """Generation Request Serializer"""
 
-    prompt: str = Field(min_length=20)
+    prompt: str = Field(min_length=10)
 
 
 class GenAI:
