@@ -3,7 +3,7 @@ from fastapi import APIRouter, status, \
     HTTPException
 from fastapi.responses import JSONResponse
 from providers.provider import AIProvider
-import base64
+from pydantic import BaseModel, Field
 
 router = APIRouter(
     prefix="/genai",
@@ -11,12 +11,21 @@ router = APIRouter(
 )
 
 
+class GenerationRequest(BaseModel):
+    """Generation Request Serializer"""
+
+    prompt: str = Field(min_length=20)
+
+
 class GenAI:
     """Generative AI endpoints"""
 
     @staticmethod
-    @router.get("/text/{provider}/{prompt}", status_code=status.HTTP_200_OK)
-    def text_generation(provider: str, prompt: str):
+    @router.post("/text/{provider}", status_code=status.HTTP_200_OK)
+    def text_generation(
+        provider: str,
+        text_generation_request: GenerationRequest
+    ):
         """Text Generation API through AI Provider"""
 
         if provider not in AI_PROVIDERS:
@@ -26,7 +35,9 @@ class GenAI:
             )
 
         genai_model = AIProvider(provider=provider).factory_model()
-        answer = genai_model.text_generation(prompt=prompt)
+        answer = genai_model.text_generation(
+            prompt=text_generation_request.prompt
+        )
 
         return JSONResponse(
             content={"answer": answer},
@@ -34,8 +45,11 @@ class GenAI:
         )
     
     @staticmethod
-    @router.get("/image/{provider}/{prompt}", status_code=status.HTTP_200_OK)
-    def image_generation(provider: str, prompt: str):
+    @router.post("/image/{provider}", status_code=status.HTTP_200_OK)
+    def image_generation(
+        provider: str,
+        image_generation_request: GenerationRequest
+    ):
         """Image Generation API through AI Provider"""
 
         if provider not in AI_PROVIDERS:
@@ -45,7 +59,9 @@ class GenAI:
             )
         
         genai_model = AIProvider(provider=provider).factory_model()
-        image_responses = genai_model.image_generation(prompt=prompt)
+        image_responses = genai_model.image_generation(
+            prompt=image_generation_request.prompt
+        )
 
         if not image_responses:
             raise HTTPException(
