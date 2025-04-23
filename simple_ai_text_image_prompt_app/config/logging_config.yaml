@@ -1,0 +1,36 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  default:
+    '()': uvicorn.logging.DefaultFormatter
+    fmt: '%(levelprefix)s %(asctime)s | %(name)s | %(message)s'
+    use_colors: false
+
+handlers:
+  file:
+    class: logging.FileHandler
+    filename: log/app.log
+    formatter: default
+    level: INFO
+
+  console:
+    class: logging.StreamHandler
+    formatter: default
+    level: INFO
+
+loggers:
+  uvicorn:
+    handlers: [file, console]
+    level: INFO
+    propagate: false
+
+  uvicorn.error:
+    handlers: [file, console]
+    level: INFO
+    propagate: false
+
+  uvicorn.access:
+    handlers: [file, console]
+    level: INFO
+    propagate: false
