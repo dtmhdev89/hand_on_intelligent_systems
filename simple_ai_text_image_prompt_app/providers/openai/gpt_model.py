@@ -1,12 +1,18 @@
 from config.settings import env_settings
 from openai import OpenAI, RateLimitError
+import base64
 
 
 class GPTModel:
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        number_of_images: int | None = 1,
+        image_size: str | None = "256x256"
+    ) -> None:
+        self.number_of_images = number_of_images
+        self.image_size = image_size
         self.model_name_for_text = "gpt-3.5-turbo"
         self.model_name_for_image = "dall-e-3"
-        self.image_size = "1024x1024"
         self._client = None
 
     def client(self):
@@ -14,7 +20,7 @@ class GPTModel:
 
         if self._client is None:
             self._client = OpenAI(api_key=env_settings.OPENAI_API_KEY)
-        
+
         return self._client
 
     def text_generation(self, prompt):
@@ -41,12 +47,16 @@ class GPTModel:
                 prompt=prompt,
                 size=self.image_size,
                 quality="standard",
-                n=1
+                response_format="b64_json",
+                n=self.number_of_images
             )
 
-            image_url = response.data[0].url
+            image_data = []
+            for img in response.data:
+                image_base64 = base64.b64decode(img.b64_json)
+                image_data.append(image_base64)
 
-            return image_url
+            return image_data
         except RateLimitError as e:
             print(str(e))
             raise
