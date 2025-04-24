@@ -46,6 +46,10 @@ class StreamlitApp:
                 if image_responses:
                     for b64_img in image_responses:
                         st.image(b64_img, use_container_width=True)
+                        href = f'<a class="download-button" href="{b64_img}" '\
+                            'download="generated_image.png">'\
+                            'Download</a>'
+                        st.markdown(href, unsafe_allow_html=True)
                 else:
                     st.warning("No image generated")
             except Exception as e:
