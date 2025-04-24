@@ -54,7 +54,9 @@ class GPTModel:
             image_data = []
             for img in response.data:
                 image_base64 = base64.b64decode(img.b64_json)
-                image_data.append(image_base64)
+                base64_encoded = base64.b64encode(image_base64).decode('utf-8')
+                data_url = f"data:image/png;base64,{base64_encoded}"
+                image_data.append(data_url)
 
             return image_data
         except RateLimitError as e:
