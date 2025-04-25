@@ -1,5 +1,5 @@
-from providers.openai.gpt_model import GPTModel
-from providers.google.gemini_model import GeminiModel
+from simple_ai_text_image_prompt_app.providers.openai.gpt_model import GPTModel
+from simple_ai_text_image_prompt_app.providers.google.gemini_model import GeminiModel
 
 
 class AIProvider:
