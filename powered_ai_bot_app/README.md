@@ -35,7 +35,9 @@ APP_ENV=development  # or any environment
 TELEGRAM_API_KEY=
 TELEGRAM_BOT_USERNAME=
 GOOGLE_API_KEY=
+OPENAI_API_KEY=
 
+# Let OPENAI_API_KEY empty since the bot app doesn't support openai at the moment
 # Ref: https://telepot.readthedocs.io/en/latest/#id5 to setup and get TELEGRAM_API_KEY and TELEGRAM_BOT_USERNAME
 # Ref: https://ai.google.dev/gemini-api/docs/api-key to setup and get GOOGLE_API_KEY
 ```
