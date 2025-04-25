@@ -32,8 +32,6 @@ class InteractionBot:
         if (content_type == "text"):
             command = msg['text']
 
-            print("User Prompt: ", command)
-
             if 'hello' in command.split()[:2]:
                 self.bot.sendMessage(
                     chat_id,
