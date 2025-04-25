@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = os.environ.get("ENV_FILE_PATH")
+        extra = "allow"
 
 
 env_settings = Settings()

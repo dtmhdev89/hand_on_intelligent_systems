@@ -24,11 +24,11 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 
-import_packages = [
-    "simple_ai_text_image_prompt_app"
-]
+# import_packages = [
+#     "simple_ai_text_image_prompt_app"
+# ]
 
-for idx, package_name in enumerate(import_packages):
-    package_path = os.path.join(PROJECT_ROOT, package_name)
-    if package_path not in sys.path:
-        sys.path.insert(idx + 2, package_path)
+# for idx, package_name in enumerate(import_packages):
+#     package_path = os.path.join(PROJECT_ROOT, package_name)
+#     if package_path not in sys.path:
+#         sys.path.insert(idx + 2, package_path)
