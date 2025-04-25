@@ -43,6 +43,26 @@ OPENAI_API_KEY=
 ```
 
 ```
+# install virtualenv if not installed yet
+pip install virtualenv
+```
+
+```
+# create virtual environment
+# cd powered_ai_bot_app  # if not
+
+python3 -m virtualenv .venv
+
+source .venv/bin/activate
+```
+
+```
+# install libs
+pip install -r requirements.txt -q
+```
+
+```
+# Export ENV_FILE_PATH
 export ENV_FILE_PATH=<path_to_your_.env>
 ```
 
