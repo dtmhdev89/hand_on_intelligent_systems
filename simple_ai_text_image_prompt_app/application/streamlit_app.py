@@ -1,17 +1,5 @@
 import streamlit as st
-import sys
-import os
-
-up_levels = [".."] * 1
-PROJECT_ROOT = os.path.abspath(os.path.join(
-    os.path.dirname(__file__),
-    *up_levels
-))
-
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
-
-from providers.provider import AIProvider
+from simple_ai_text_image_prompt_app.providers.provider import AIProvider
 
 
 class StreamlitApp:

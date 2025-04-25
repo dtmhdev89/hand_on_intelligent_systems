@@ -1,8 +1,8 @@
-from config.constant import AI_PROVIDERS
+from simple_ai_text_image_prompt_app.config.constant import AI_PROVIDERS
 from fastapi import APIRouter, status, \
     HTTPException
 from fastapi.responses import JSONResponse
-from providers.provider import AIProvider
+from simple_ai_text_image_prompt_app.providers.provider import AIProvider
 from pydantic import BaseModel, Field
 
 router = APIRouter(

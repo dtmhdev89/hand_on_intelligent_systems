@@ -1,4 +1,4 @@
-from config.settings import env_settings
+from simple_ai_text_image_prompt_app.config.settings import env_settings
 from openai import OpenAI, RateLimitError
 import base64
 
