@@ -6,21 +6,23 @@ class PdfParser:
 
     def __init__(self, pdf_file):
         self._pdf_file = pdf_file
-        self._pdf_reader = None
-    
-    @property
-    def pdf_reader(self):
-        if self._pdf_reader is None:
-            self._pdf_reader = PdfReader(self._pdf_file)
+        self._reader = None
 
-        return self._pdf_reader
+    @property
+    def reader(self):
+        """_reader getter"""
+
+        if self._reader is None:
+            self._reader = PdfReader(self._pdf_file)
+
+        return self._reader
 
     def extract_text(self):
         """Make text extraction"""
 
         text = ""
 
-        for page in self.pdf_reader.pages:
+        for page in self.reader.pages:
             text += page.extract_text()
 
         return text

@@ -9,6 +9,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import PromptTemplate
 from chat_with_resources_app.components.resources_parsers.pdf_parser import PdfParser
+from chat_with_resources_app.components.resources_parsers.webpage_parser import WebpageParser
 from chat_with_resources_app.components.embeddings.embeddings import Embeddings
 from chat_with_resources_app.components.vector_searchs.vector_search import VectorSearch
 from chat_with_resources_app.components.llm_providers.llm_provider import LlmProvider
@@ -34,14 +35,19 @@ class ResourcesChatApp:
         api_key_set = os.environ.get(
             ApiKeyValidator.AI_PROVIDER_ENV_KEY[self.ai_provider]
         )
+        
+        if api_key_set:
+            selected_feature = st.selectbox(
+                "Select QA resource:",
+                ("Webpage", "PDF")
+            )
 
-        if  api_key_set:
-            pdf_file = st.file_uploader("Upload a PDF", type="pdf")
+            if selected_feature == "PDF":
+                text = self._pdf_gui_and_parser()
+            else:
+                text = self._webpage_gui_and_parser()
             
-            if pdf_file is not None:
-                pdf_parser = PdfParser(pdf_file)
-                text = pdf_parser.extract_text()
-                
+            if text:
                 text_splitter = CharacterTextSplitter(
                     separator="\n",
                     chunk_size=1000,  # characters
@@ -60,7 +66,9 @@ class ResourcesChatApp:
                 ).factory_search()
                 vector_search.build_text_indexes(chunks)
 
-                user_question = st.text_input("Ask a Question about the resources:")
+                user_question = st.text_input(
+                    "Ask a Question about the resource:"
+                )
 
                 if user_question:
                     docs = vector_search.similarity_search(user_question)
@@ -89,6 +97,33 @@ class ResourcesChatApp:
                         )
 
                     st.write(response)
+    
+    def _pdf_gui_and_parser(self):
+        """Display pdf uploader and text extraction"""
+
+        pdf_file = st.file_uploader("Upload a PDF", type="pdf")
+
+        text = ""
+
+        if pdf_file is not None:
+            pdf_parser = PdfParser(pdf_file)
+            text = pdf_parser.extract_text()
+        else:
+            st.error("Please input a PDF file")
+        
+        return text
+    
+    def _webpage_gui_and_parser(self):
+        """Display webpage url and text extraction"""
+        url = st.text_input("Input an URL:")
+        text = ""
+        if url:
+            webpage_parser = WebpageParser(url=url)
+            text = webpage_parser.extract_text()
+        else:
+            st.error("Please input an URL")
+
+        return text
     
     def _setup_chain(self, llm):
         chain = create_stuff_documents_chain(
